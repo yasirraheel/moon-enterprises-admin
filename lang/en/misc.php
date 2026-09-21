@@ -306,7 +306,7 @@ return array(
 	'yes_withdraw' => 'Yes, withdraw!',
 	'add_funds' => 'Add Funds',
 	'funds' => 'Funds',
-	'add_funds_desc' => 'Add funds - GEO ENTERPRISES',
+	'add_funds_desc' => 'Add funds - MOON ENTERPRISES',
 	'debit_credit_card' => 'Debit / Credit Card',
 	'handling_fee' => 'Handling fee',
 	'amount_minimum' => 'The minimum amount is :symbol:min :code', // Not remove :symbol:min and :code
@@ -571,7 +571,7 @@ return array(
 	'default_language' => 'Default language',
 	'default_language_info' => 'This language will be taken by default when the user language does not exist.',
 	'alert_pwa_https' => 'You must use HTTPS (SSL) for PWA to work.',
-	'pwa_short_name' => 'App short name (Ex: GEO ENTERPRISES)',
+	'pwa_short_name' => 'App short name (Ex: MOON ENTERPRISES)',
 	'connect_stripe_account' => 'Connect Stripe Account',
 	'view_stripe_account' => 'View Stripe account',
 	'connected' => 'Connected',
@@ -644,7 +644,7 @@ return array(
 	'stripe_text_info_5' => 'Please provide your name and e-mail address.',
 	'subscription_plan' => 'Plan :name',// Not remove  :name
 	'subscription_exists' => 'You have an active subscription.',
-	'agree_subscription' => 'By clicking pay you agree to the :terms and authorize GEO ENTERPRISES to charge your payment method on a recurring basis. You may cancel at any time.', // Not remove :term
+	'agree_subscription' => 'By clicking pay you agree to the :terms and authorize MOON ENTERPRISES to charge your payment method on a recurring basis. You may cancel at any time.', // Not remove :term
 	'terms_services' => 'Terms of service',
 	'subscription' => 'Subscription',
 	'subscription_success' => 'Subscription created successfully!',

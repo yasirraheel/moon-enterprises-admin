@@ -144,7 +144,7 @@ return array(
     'email_admin'               =>      'Email Admin',
     'paypal_account'            =>      'Cuenta PayPal',
 	'paypal_account_donations'  =>      '* Email para recibir donaciones.',
-	'paypal_desc_donations'     =>      'Soporte a GEO ENTERPRISES!',
+	'paypal_desc_donations'     =>      'Soporte a MOON ENTERPRISES!',
     'languages'                 =>      'Lenguajes',
     'abbreviation'              =>      'Abreviatura',
     'important_note'            =>      'IMPORTANTE: debe colocar el nombre de la carpeta correcta ubicada en: lang',

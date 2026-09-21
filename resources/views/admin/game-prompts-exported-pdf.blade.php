@@ -111,7 +111,7 @@
         @if(isset($settings->logo))
             <img src="{{ public_path('img/'.$settings->logo) }}" class="logo" alt="Logo">
         @else
-            <h2>{{ $settings->title ?? 'Geo Enterprises' }}</h2>
+            <h2>{{ $settings->title ?? 'Moon Enterprises' }}</h2>
         @endif
         <div class="title">Exported Orders Report</div>
         <div class="tagline">Generated on {{ date('d M, Y') }}</div>
@@ -181,7 +181,7 @@
     </table>
 
     <div class="footer">
-        &copy; {{ date('Y') }} {{ $settings->title ?? 'Geo Enterprises' }}. All rights reserved.
+        &copy; {{ date('Y') }} {{ $settings->title ?? 'Moon Enterprises' }}. All rights reserved.
     </div>
 </body>
 </html>

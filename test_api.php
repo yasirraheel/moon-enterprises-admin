@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['test'])) {
         'success' => true,
         'message' => 'API is working',
         'data' => [
-            'app_name' => 'GEO ENTERPRISES',
+            'app_name' => 'MOON ENTERPRISES',
             'status' => 'online'
         ]
     ]);

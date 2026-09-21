@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ url('public/img', $settings->favicon) }}" />
 
-    <title>GEO ENTERPRISES - {{ __('admin.admin') }}</title>
+    <title>{{ $settings->title ?? 'MOON ENTERPRISES' }} - {{ __('admin.admin') }}</title>
 
     <link href="{{ asset('public/css/core.min.css') }}?v={{$settings->version}}" rel="stylesheet">
     <link href="{{ asset('public/css/bootstrap.min.css') }}?v={{$settings->version}}" rel="stylesheet">

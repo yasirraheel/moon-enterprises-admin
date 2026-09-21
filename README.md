@@ -1,8 +1,8 @@
-# 🏆 GEO ENTERPRISES - Prize Bond Booking System
+# 🏆 MOON ENTERPRISES - Prize Bond Booking System
 
 <div align="center">
 
-![GEO ENTERPRISES](https://img.shields.io/badge/GEO%20ENTERPRISES-Prize%20Bond%20System-blue?style=for-the-badge)
+![MOON ENTERPRISES](https://img.shields.io/badge/MOON%20ENTERPRISES-Prize%20Bond%20System-blue?style=for-the-badge)
 ![Laravel](https://img.shields.io/badge/Laravel-10.x-red?style=for-the-badge&logo=laravel)
 ![PHP](https://img.shields.io/badge/PHP-8.1+-green?style=for-the-badge&logo=php)
 ![MySQL](https://img.shields.io/badge/MySQL-Database-blue?style=for-the-badge&logo=mysql)
@@ -22,7 +22,7 @@
 
 ## 🎯 Overview
 
-**GEO ENTERPRISES Prize Bond Booking System** is a full-featured web application designed to streamline prize bond operations. The system offers secure transaction management, customer relationship tools, and comprehensive administrative controls.
+**MOON ENTERPRISES Prize Bond Booking System** is a full-featured web application designed to streamline prize bond operations. The system offers secure transaction management, customer relationship tools, and comprehensive administrative controls.
 
 ## ✨ Key Features
 
@@ -65,8 +65,8 @@
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/yasirraheel/GEO-ENTERPRISES.git
-cd GEO-ENTERPRISES
+git clone https://github.com/yasirraheel/moon-enterprises-admin.git
+cd moon-enterprises-admin
 composer install
 ```
 
@@ -129,6 +129,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 <div align="center">
-<b>GEO ENTERPRISES</b> - Professional Prize Bond Booking Solutions <br>
+<b>MOON ENTERPRISES</b> - Professional Prize Bond Booking Solutions <br>
 <i>Built with ❤️ using Laravel</i>
 </div>

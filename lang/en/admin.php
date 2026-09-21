@@ -173,7 +173,7 @@ return array(
     'email_admin'               =>      'Email Admin',
     'paypal_account'            =>      'PayPal Account',
 	'paypal_account_donations'  =>      '* Email to receive donations',
-	'paypal_desc_donations'     =>      'GEO ENTERPRISES! Support',
+	'paypal_desc_donations'     =>      'MOON ENTERPRISES! Support',
     'languages'                 =>      'Languages',
     'abbreviation'              =>      'Abbreviation',
     'important_note'            =>      'IMPORTANT: You must place the name of the correct folder located at: lang',

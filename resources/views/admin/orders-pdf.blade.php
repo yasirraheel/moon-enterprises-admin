@@ -169,7 +169,7 @@
         @if($settings->logo_light)
             <img src="{{ public_path('img/' . $settings->logo_light) }}" alt="Logo" class="logo">
         @endif
-        <div class="title">{{ $settings->name_site ?? 'GEO ENTERPRISES' }}</div>
+        <div class="title">{{ $settings->name_site ?? 'MOON ENTERPRISES' }}</div>
         <div class="tagline">{{ $settings->tagline ?? 'Prize Bond Booking System' }}</div>
     </div>
 
@@ -241,7 +241,7 @@
     </table>
 
     <div class="footer">
-        <p>{{ $settings->name_site ?? 'GEO ENTERPRISES' }} - Orders Export | Page <span class="pagenum"></span></p>
+        <p>{{ $settings->name_site ?? 'MOON ENTERPRISES' }} - Orders Export | Page <span class="pagenum"></span></p>
     </div>
 
     <script type="text/php">

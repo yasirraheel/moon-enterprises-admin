@@ -24,9 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             'request_uri' => $_SERVER['REQUEST_URI']
         ],
         'test_endpoints' => [
-            'settings' => 'https://geoenterprises.shahabtech.com/api/settings',
-            'login' => 'https://geoenterprises.shahabtech.com/api/login',
-            'register' => 'https://geoenterprises.shahabtech.com/api/register'
+            'settings' => 'https://moonenterprises.net/api/settings',
+            'login' => 'https://moonenterprises.net/api/login',
+            'register' => 'https://moonenterprises.net/api/register'
         ]
     ]);
     exit();

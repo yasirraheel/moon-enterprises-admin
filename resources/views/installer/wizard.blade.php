@@ -408,7 +408,7 @@
                       <div class="input-group mb-3">
                         <span class="input-group-text text-muted bg-transparent"><i class="fa fa-cogs"></i></span>
                         <input class="form-control" required value="{{old('app_name')}}" placeholder="App Name" name="app_name" type="text">
-                        <small class="text-muted d-block w-100">For example: <em>GEO ENTERPRISES</em></small>
+                        <small class="text-muted d-block w-100">For example: <em>MOON ENTERPRISES</em></small>
                       </div>
 
                       <div class="input-group mb-3">

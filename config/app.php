@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'GEO ENTERPRISES - Prize Bond Booking System'),
+    'name' => env('APP_NAME', 'MOON ENTERPRISES - Prize Bond Booking System'),
 
     /*
     |--------------------------------------------------------------------------
