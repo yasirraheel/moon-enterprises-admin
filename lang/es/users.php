@@ -1,0 +1,76 @@
+<?php
+
+return array(
+
+	/*
+	|--------------------------------------------------------------------------
+	| Users Language Lines
+	|--------------------------------------------------------------------------
+	|
+	*/
+	'likes' => 'Me gustas',
+	'favorites' => 'Favoritos',
+	'freelancers' => 'Freelancers',
+	'follow' => 'Seguir',
+	'followers' => 'Seguidores',
+	'following' => 'Siguiendo',
+	'messages' => 'Mensajes',
+	'notifications' => 'Notificaciones',
+	'account_settings' => 'Configuraciones',
+	'my_profile' => 'Mi perfil',
+	'logout' => 'Cerrar sesión',
+	'stats' => 'Estadísticas',
+	'edit_profile' => 'Editar perfil',
+	'send_message' => 'Enviar mensaje',
+	'hire_me' => 'Contrátame',
+	'report_user' => 'Reportar usuario como SPAM',
+	'block_user' => 'Bloquear usuario',
+	'about_me' => 'Acerca de mí',
+	'no_members_found' => 'No customers found',
+	'edit' => 'Editar',
+	'delete' => 'Borrar',
+	'cancel' => 'Cancelar',
+	'ok' => 'Ok',
+	'save' => 'Guardar',
+	'account_profile' => 'Perfil',
+	'go_to_profile' => 'Ir al perfil',
+	'delete_account' => 'Eliminar mi cuenta',
+	'settings' => 'Configuraciones',
+	'title_email_verify' => 'Verificar su dirección de correo electrónico',
+	'text_email_verify' => 'Gracias por crear una cuenta con nosotros. Siga el enlace a continuación para verificar su dirección de correo electrónico',
+	'you_are_following' => 'ha comenzado a seguirte',
+	'account_validated' => 'Su cuenta ha sido validada con éxito',
+	'code_not_valid' => '¡La confirmación del código no es válida!',
+	'followed_you' => 'te siguió',
+	'members' => 'Customer|Customers',
+	'name' => 'Nombre',
+	'create' => 'Crear',
+	'lists_members' => 'List Customers',
+	'add_members' => 'Add customers',
+	'done' => 'Hecho',
+	'send_msg_private' => 'enviándole un mensaje',
+	'unblock' => 'DESBLOQUEAR',
+	'click_below_email' => 'Puede confirmar el correo electrónico de su cuenta a través del siguiente enlace:',
+	'confirm_my_account' => 'Confirmar mi cuenta',
+	'see_your_followers' => 'Ver a tus seguidores',
+	'find_users' => 'Buscar Usuarios',
+	'back_to_messages' => 'Volver a mensajes',
+	'account_normal' => 'Cuenta normal',
+	'free' => 'Gratis',
+	'create_account' => 'Crear cuenta',
+	'yearly' => 'Anual',
+	'admin' => 'Admin',
+	'add_by_admin' => 'te ha agregado como administrador',
+	'user_suspended' => 'Este usuario ha sido suspendido',
+	'registered' => 'Registrado',
+	'dashboard' => 'Dashboard',
+	'upload' => 'Subir',
+	'comment_you_photo' => 'comentó tu foto',
+	'like_you_photo' => 'le gusta tu foto',
+	'liked_your_comment' => 'le gustó tu comentario en',
+	'delete_all_notifications' => 'Eliminar todas las notificaciones',
+	'user_no_images' => 'No hay fotos para mostrar',
+
+
+
+);

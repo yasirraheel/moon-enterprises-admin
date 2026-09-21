@@ -1,0 +1,652 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LangController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\PlansController;
+use App\Http\Controllers\PayPalController;
+use App\Http\Controllers\StripeController;
+use App\Http\Controllers\InstallController;
+use App\Http\Controllers\UpgradeController;
+use App\Http\Controllers\AddFundsController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\PaystackController;
+use App\Http\Controllers\RazorpayController;
+use App\Http\Controllers\TaxRatesController;
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InstamojoController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\FlutterwaveController;
+use App\Http\Controllers\CoinpaymentsController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\InstallScriptController;
+use App\Http\Controllers\StripeConnectController;
+use App\Http\Controllers\StripeWebHookController;
+use App\Http\Controllers\SubscriptionsController;
+use App\Http\Controllers\TwoFactorAuthController;
+use App\Http\Controllers\CountriesStatesController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\RolesAndPermissionsController;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+/*
+ |-----------------------------------
+ | Index
+ |--------- -------------------------
+ */
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('home', function() {
+	return redirect('/');
+});
+
+/*
+ |-----------------------------------
+ | Images Sections
+ |--------- -------------------------
+ */
+Route::get('latest', [HomeController::class, 'latest']);
+Route::get('featured', [HomeController::class, 'featured']);
+Route::get('popular', [HomeController::class, 'popular']);
+Route::get('most/commented', [HomeController::class, 'commented']);
+Route::get('most/viewed', [HomeController::class, 'viewed']);
+Route::get('most/downloads', [HomeController::class, 'downloads']);
+Route::get('photos/premium', [HomeController::class, 'premium']);
+Route::get('explore/vectors', [HomeController::class, 'vectors']);
+
+/*
+ |-----------------------------------
+ | Authentication
+ |--------- -------------------------
+ */
+ // Authentication Routes.
+ Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+ Route::post('login', [LoginController::class, 'login']);
+ Route::get('logout', [LoginController::class, 'logout']);
+
+ // Registration Routes.
+ Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+ Route::post('register', [RegisterController::class, 'register']);
+
+ // Password Reset Routes.
+ Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+ Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+ Route::post('password/reset', [ResetPasswordController::class, 'reset']);
+
+/*
+ |-----------------------------------
+ | Social Login
+ |--------- -------------------------
+ */
+Route::group(['middleware' => 'guest'], function() {
+	Route::get('oauth/{provider}', [SocialAuthController::class, 'redirect'])->where('provider', '(facebook|google|twitter)$');
+	Route::get('oauth/{provider}/callback', [SocialAuthController::class, 'callback'])->where('provider', '(facebook|google|twitter)$');
+});//<--- End Group guest
+
+/*
+ |
+ |-----------------------------------
+ | Default Sections
+ |--------- -------------------------
+ */
+
+// Members
+Route::get('members',[HomeController::class, 'members']);
+
+ // Categories
+ Route::get('categories',[HomeController::class, 'categories']);
+
+ // Pricing
+ Route::get('pricing',[HomeController::class, 'pricing']);
+
+//<---- Categories List
+Route::get('category/{slug}',[HomeController::class, 'category']);
+Route::get('category/{slug}/{subcategory}', [HomeController::class, 'subcategory']);
+
+//<---- Tags
+Route::get('tags',[HomeController::class, 'tags']);
+Route::get('tags/{tags}',[HomeController::class, 'tagsShow']);
+
+// Collections
+Route::get('collections',[HomeController::class, 'collections']);
+
+// Collections Detail
+Route::get('{user}/collection/{id}/{slug?}',[UserController::class, 'collectionDetail']);
+
+// Cameras
+Route::get('cameras/{cameras}',[HomeController::class, 'cameras']);
+
+// Colors
+Route::get('colors/{colors}',[HomeController::class, 'colors']);
+
+// Search
+Route::get('search', [HomeController::class, 'getSearch']);
+
+// Photo Details
+Route::get('photo/{id}/{slug?}',[ImagesController::class, 'show']);
+
+// Logout
+Route::get('/logout',[LoginController::class, 'logout']);
+Route::get('contact',[HomeController::class, 'contact']);
+Route::post('contact',[HomeController::class, 'contactStore']);
+
+/*
+ |
+ |-----------------------------------
+ | Verify Account
+ |--------- -------------------------
+ */
+Route::get('verify/account/{confirmation_code}', [HomeController::class, 'getVerifyAccount'])->where('confirmation_code','[A-Za-z0-9]+');
+
+/*
+ |
+ |------------------------
+ | Pages Static Custom
+ |--------- --------------
+ */
+ Route::get('page/{page}',[PagesController::class, 'show'])->where('page','[^/]*' );
+
+ /*
+ |
+ |----------------------------
+ | Sitemaps
+ |--------- ------------------
+ */
+Route::get('sitemaps.xml', function() {
+	return response()->view('default.sitemaps')->header('Content-Type', 'application/xml');
+});
+
+// Only Stock
+Route::get('sitemaps-media.xml', function() {
+	return response()->view('default.sitemaps-media')->header('Content-Type', 'application/xml');
+});
+
+/*
+ |
+ |-----------------------------------
+ | Ajax Request
+ |--------- -------------------------
+ */
+Route::post('ajax/like', [AjaxController::class, 'like']);
+Route::post('ajax/follow', [AjaxController::class, 'follow']);
+Route::get('ajax/notifications', [AjaxController::class, 'notifications']);
+Route::get('ajax/users', [AjaxController::class, 'users']);
+Route::get('ajax/search', [AjaxController::class, 'search']);
+Route::get('ajax/latest', [AjaxController::class, 'latest']);
+Route::get('ajax/featured', [AjaxController::class, 'featured']);
+Route::get('ajax/popular', [AjaxController::class, 'popular']);
+Route::get('ajax/commented', [AjaxController::class, 'commented']);
+Route::get('ajax/viewed', [AjaxController::class, 'viewed']);
+Route::get('ajax/downloads', [AjaxController::class, 'downloads']);
+Route::get('ajax/category', [AjaxController::class, 'category']);
+Route::get('ajax/tags', [AjaxController::class, 'tags']);
+Route::get('ajax/cameras', [AjaxController::class, 'camera']);
+Route::get('ajax/colors', [AjaxController::class, 'colors']);
+Route::get('ajax/user/images', [AjaxController::class, 'userImages']);
+Route::get('ajax/comments', [AjaxController::class, 'comments']);
+Route::get('ajax/premium', [AjaxController::class, 'premium']);
+
+/*
+ |
+ |-----------------------------------
+ | User Views LOGGED
+ |--------- -------------------------
+ */
+Route::group(['middleware' => 'auth'], function() {
+
+	//<---- Upload
+	 Route::get('upload',[ImagesController::class, 'showUpload']);
+	 Route::post('upload',[ImagesController::class, 'create']);
+
+	// Edit Photo
+	Route::get('edit/photo/{id}',[ImagesController::class, 'edit']);
+	Route::post('update/photo',[ImagesController::class, 'update']);
+
+	// Delete Photo 6
+	Route::post('delete/photo/{id}',[ImagesController::class, 'destroy']);
+
+	// Get Subcategories
+	Route::post('get/subcategories', [ImagesController::class, 'getSubcategories']);
+
+	// Account Settings
+	Route::get('account',[UserController::class, 'account']);
+	Route::post('account',[UserController::class, 'update_account']);
+
+	// Password
+	Route::get('account/password',[UserController::class, 'password']);
+	Route::post('account/password',[UserController::class, 'update_password']);
+
+	// Delete Account
+	Route::get('account/delete',[UserController::class, 'delete']);
+	Route::post('account/delete',[UserController::class, 'delete_account']);
+
+	// Upload Avatar
+	Route::post('upload/avatar',[UserController::class, 'upload_avatar']);
+
+	// Upload Cover
+	Route::post('upload/cover',[UserController::class, 'upload_cover']);
+
+	// Likes
+	Route::get('likes',[UserController::class, 'userLikes']);
+
+	// Feed
+	Route::get('feed',[UserController::class, 'followingFeed']);
+
+	// Photos Pending
+	Route::get('photos/pending',[UserController::class, 'photosPending']);
+
+	// Notifications
+	Route::get('notifications',[UserController::class, 'notifications']);
+	Route::get('notifications/delete',[UserController::class, 'notificationsDelete']);
+
+
+
+	// Report Photo
+	Route::post('report/photo',[ImagesController::class, 'report']);
+
+	// Report User
+	Route::post('report/user',[UserController::class, 'report']);
+
+	// Collections
+	Route::post('collection/store',[CollectionController::class, 'store']);
+
+	// Collection Edit
+	Route::post('collection/edit',[CollectionController::class, 'edit']);
+
+	// Collectin Delete
+	Route::get('collection/delete/{id}',[CollectionController::class, 'destroy']);
+
+	// Add Image to Collection
+	Route::get('collection/{id}/i/{image}', [CollectionController::class, 'addImageCollection'])->where(array( 'id' => '[0-9]+','image' => '[0-9]+'));
+
+	// Comments
+	Route::post('comment/store',[CommentsController::class, 'store']);
+
+	// Comments Delete
+	Route::post('comment/delete',[CommentsController::class, 'destroy']);
+
+	// Comment Like
+	Route::post('comment/like',[CommentsController::class, 'like']);
+
+	//======= DASHBOARD ================//
+	// Dashboard
+	Route::get('user/dashboard',[DashboardController::class, 'dashboard']);
+
+	// Photos
+	Route::get('user/dashboard/photos',[DashboardController::class, 'photos']);
+
+	// Sales
+	Route::get('user/dashboard/sales',[DashboardController::class, 'sales']);
+
+	// Purchases
+	Route::get('user/dashboard/purchases',[DashboardController::class, 'purchases']);
+
+	// Deposits
+	Route::get('user/dashboard/deposits',[DashboardController::class, 'deposits']);
+
+	// Add Funds
+	Route::get('user/dashboard/add/funds',[DashboardController::class, 'addFunds']);
+	Route::post('user/dashboard/add/funds',[AddFundsController::class, 'send']);
+
+	// Withdrawals
+	Route::get('user/dashboard/withdrawals',[DashboardController::class, 'showWithdrawal']);
+
+	// Request withdrawal
+	Route::post('request/withdrawal',[DashboardController::class, 'withdrawal']);
+
+	Route::get('user/dashboard/withdrawals/configure',[DashboardController::class, 'withdrawalsConfigureView']);
+
+	Route::post('user/withdrawals/configure/{type}',[DashboardController::class, 'withdrawalConfigure']);
+
+	Route::post('delete/withdrawal/{id}',[DashboardController::class, 'withdrawalDelete']);
+
+	// Download Photo by creator
+	Route::post('purchase/stock/{token_id}',[ImagesController::class, 'purchase']);
+
+	// Download Photo by Subscription
+	Route::post('subscription/stock/{token_id}',[ImagesController::class, 'subscriptionDownload']);
+
+	// Purchase Photo
+	Route::post('buy/stock/{token}',[CheckoutController::class, 'send']);
+
+	// Stripe Connect
+	Route::get('stripe/connect', [StripeConnectController::class, 'redirectToStripe'])->name('redirect.stripe');
+	Route::get('connect/{token}', [StripeConnectController::class, 'saveStripeAccount'])->name('save.stripe');
+
+	// Subscription
+	Route::post('buy/subscription',[SubscriptionsController::class, 'buy']);
+
+	// Account Subscription
+	Route::get('account/subscription',[UserController::class, 'subscription']);
+	Route::get('buy/subscription/success',[SubscriptionsController::class, 'success'])->name('success.subscription');
+	Route::post('account/subscription/cancel',[SubscriptionsController::class, 'cancel']);
+
+});//<------ End User Views LOGGED
+
+// See all Comments Likes
+	Route::post('comments/likes',[CommentsController::class, 'getLikes']);
+
+/*
+ |
+ |-----------------------------------
+ | User Views
+ |--------- -------------------------
+ */
+
+//<----------- USERS VIEWS ---------->>>
+
+// Downloads Images
+Route::group(['middleware' => 'downloads'], function() {
+	Route::post('download/stock/{token_id}',[ImagesController::class, 'download']);
+});
+
+
+/*
+ |
+ |-----------------------------------
+ | Profile User
+ |-----------------------------------
+ */
+
+Route::get('{slug}', [UserController::class, 'profile'])->where('slug','[A-Za-z0-9\_-]+')->name('profile');
+Route::get('{slug}/followers', [UserController::class, 'followers'])->where('slug','[A-Za-z0-9\_-]+')->name('profile');
+Route::get('{slug}/following', [UserController::class, 'following'])->where('slug','[A-Za-z0-9\_-]+')->name('profile');
+Route::get('{slug}/collections', [UserController::class, 'collections'])->where('slug','[A-Za-z0-9\_-]+')->name('profile');
+
+/*
+ |
+ |-----------------------------------
+ | Admin Panel
+ |--------- -------------------------
+ */
+Route::group(['middleware' => 'role'], function() {
+
+	// Upgrades
+	Route::get('update/{version}',[UpgradeController::class, 'update']);
+
+	// Dashboard
+	Route::get('panel/admin',[AdminController::class, 'dashboard'])->name('dashboard');
+
+	// Categories
+	Route::get('panel/admin/categories',[AdminController::class, 'categories'])->name('categories');
+	Route::get('panel/admin/categories/add',[AdminController::class, 'addCategories'])->name('categories');
+	Route::post('panel/admin/categories/add',[AdminController::class, 'storeCategories']);
+	Route::get('panel/admin/categories/edit/{id}',[AdminController::class, 'editCategories'])->name('categories');
+	Route::post('panel/admin/categories/update',[AdminController::class, 'updateCategories']);
+	Route::post('panel/admin/categories/delete/{id}',[AdminController::class, 'deleteCategories']);
+
+	// Subcategories
+	Route::get('panel/admin/subcategories',[AdminController::class, 'subcategories'])->name('categories');
+	Route::get('panel/admin/subcategories/add',[AdminController::class, 'addSubcategories'])->name('categories');
+	Route::post('panel/admin/subcategories/add',[AdminController::class, 'storeSubcategories']);
+	Route::get('panel/admin/subcategories/edit/{id}',[AdminController::class, 'editSubcategories'])->name('categories');
+	Route::post('panel/admin/subcategories/update',[AdminController::class, 'updateSubcategories']);
+	Route::post('panel/admin/subcategories/delete/{id}',[AdminController::class, 'deleteSubcategories']);
+
+	// Settings
+	Route::get('panel/admin/settings',[AdminController::class, 'settings'])->name('general_settings');
+	Route::post('panel/admin/settings',[AdminController::class, 'saveSettings']);
+	
+
+	// Limits
+	Route::get('panel/admin/settings/limits',[AdminController::class, 'settingsLimits'])->name('general_settings');
+	Route::post('panel/admin/settings/limits',[AdminController::class, 'saveSettingsLimits']);
+
+	Route::view('panel/admin/announcements','admin.announcements')->name('announcements');
+	Route::post('panel/admin/announcements', [AdminController::class, 'storeAnnouncements']);
+
+	// Images
+	Route::get('panel/admin/images',[AdminController::class, 'images'])->name('images');
+	Route::post('panel/admin/images/delete',[AdminController::class, 'delete_image']);
+
+	Route::get('panel/admin/images/{id}',[AdminController::class, 'edit_image'])->name('images');
+	Route::post('panel/admin/images/update',[AdminController::class, 'update_image']);
+
+	// Members
+	Route::get('panel/admin/members',[AdminUserController::class, 'index'])->name('members');
+	Route::get('panel/admin/members/edit/{id}',[AdminUserController::class, 'edit'])->name('members');
+	Route::post('panel/admin/members/edit/{id}', [AdminUserController::class, 'update']);
+	Route::post('panel/admin/members/{id}', [AdminUserController::class, 'destroy'])->name('user.destroy');
+
+	// Members Reported
+	Route::get('panel/admin/members-reported',[AdminController::class, 'members_reported'])->name('members_reported');
+	Route::post('panel/admin/members-reported',[AdminController::class, 'delete_members_reported']);
+
+	// Images Reported
+	Route::get('panel/admin/images-reported',[AdminController::class, 'images_reported'])->name('images_reported');
+	Route::post('panel/admin/images-reported',[AdminController::class, 'delete_images_reported']);
+
+	// Pages
+	Route::get('panel/admin/pages',[PagesController::class, 'index'])->name('pages');
+	Route::get('panel/admin/pages/create',[PagesController::class, 'create'])->name('pages');
+	Route::post('panel/admin/pages/create',[PagesController::class, 'store']);
+	Route::get('panel/admin/pages/edit/{id}',[PagesController::class, 'edit'])->name('pages');
+	Route::post('panel/admin/pages/edit/{id}', [PagesController::class, 'update']);
+	Route::post('panel/admin/pages/{id}', [PagesController::class, 'destroy'])->name('pages.destroy');
+
+	// Profiles Social
+	Route::get('panel/admin/profiles-social',[AdminController::class, 'profiles_social'])->name('profiles_social');
+	Route::post('panel/admin/profiles-social',[AdminController::class, 'update_profiles_social']);
+
+	// Google
+	Route::get('panel/admin/google',[AdminController::class, 'google'])->name('google');
+	Route::post('panel/admin/google',[AdminController::class, 'update_google']);
+
+	//***** Languages
+	Route::get('panel/admin/languages',[LangController::class, 'index'])->name('languages');
+
+	// ADD NEW LANG
+	Route::get('panel/admin/languages/create',[LangController::class, 'create'])->name('languages');
+	Route::post('panel/admin/languages/create',[LangController::class, 'store']);
+	Route::get('panel/admin/languages/edit/{id}',[LangController::class, 'edit'])->name('languages');
+	Route::post('panel/admin/languages/edit/{id}', [LangController::class, 'update']);
+	Route::post('panel/admin/languages/{id}', [LangController::class, 'destroy'])->name('languages.destroy');
+
+	// BULK UPLOAD
+	Route::get('panel/admin/bulk-upload',[BulkUploadController::class, 'bulkUpload'])->name('bulk_upload');
+	Route::post('panel/admin/bulk-upload',[BulkUploadController::class, 'bulkUploadStore']);
+	Route::post('panel/admin/bulk/delete/media',[BulkUploadController::class, 'destroy']);
+
+	// THEME
+	Route::get('panel/admin/theme',[AdminController::class, 'theme'])->name('theme');
+	Route::post('panel/admin/theme',[AdminController::class, 'themeStore']);
+
+	// Custom CSS/JS
+	Route::view('panel/admin/custom-css-js','admin.css-js')->name('custom_css_js');
+	Route::post('panel/admin/custom-css-js',[AdminController::class, 'customCssJs']);
+
+	// Payments
+	Route::get('panel/admin/payments',[AdminController::class, 'payments'])->name('payment_settings');
+	Route::post('panel/admin/payments',[AdminController::class, 'savePayments']);
+
+	Route::get('panel/admin/payments/{id}',[AdminController::class, 'paymentsGateways'])->name('payment_settings');
+	Route::post('panel/admin/payments/{id}',[AdminController::class, 'savePaymentsGateways']);
+
+	// Purchases
+	Route::get('panel/admin/purchases',[AdminController::class, 'purchases'])->name('purchases');
+
+	// Deposits
+	Route::get('panel/admin/deposits',[AdminController::class, 'deposits'])->name('deposits');
+	Route::get('panel/admin/deposits/{id}',[AdminController::class, 'depositsView'])->name('deposits');
+  	Route::post('approve/deposits',[AdminController::class, 'approveDeposits']);
+  	Route::post('delete/deposits',[AdminController::class, 'deleteDeposits']);
+
+	//Withdrawals
+	Route::get('panel/admin/withdrawals',[AdminController::class, 'withdrawals'])->name('withdrawals');
+	Route::get('panel/admin/withdrawal/{id}',[AdminController::class, 'withdrawalsView'])->name('withdrawals');
+	Route::post('panel/admin/withdrawals/paid/{id}',[AdminController::class, 'withdrawalsPaid']);
+
+	// Maintenance mode
+	Route::view('panel/admin/maintenance', 'admin.maintenance')->name('maintenance_mode');
+	Route::post('panel/admin/maintenance',[AdminController::class, 'maintenance']);
+
+	// Clear Cache
+	Route::get('panel/admin/clear-cache', [AdminController::class, 'clearCache'])->name('maintenance_mode');
+
+	// BILLING
+	Route::view('panel/admin/billing','admin.billing')->name('billing');
+	Route::post('panel/admin/billing',[AdminController::class, 'billingStore']);
+
+	// Tax Rates
+	Route::get('panel/admin/tax-rates',[TaxRatesController::class, 'show'])->name('tax_rates');
+	Route::view('panel/admin/tax-rates/add', 'admin.add-tax')->name('tax_rates');
+	Route::post('panel/admin/tax-rates/add', [TaxRatesController::class, 'store']);
+	Route::get('panel/admin/tax-rates/edit/{id}', [TaxRatesController::class, 'edit'])->name('tax_rates');
+	Route::post('panel/admin/tax-rates/update', [TaxRatesController::class, 'update']);
+	Route::post('panel/admin/ajax/states', [TaxRatesController::class, 'getStates']);
+
+	// Plans
+	Route::get('panel/admin/plans',[PlansController::class, 'show'])->name('plans');
+	Route::view('panel/admin/plans/add', 'admin.add-plan')->name('plans');
+	Route::post('panel/admin/plans/add', [PlansController::class, 'store']);
+	Route::get('panel/admin/plans/edit/{id}', [PlansController::class, 'edit'])->name('plans');
+	Route::post('panel/admin/plans/update', [PlansController::class, 'update']);
+
+	// Subscriptions
+	Route::get('panel/admin/subscriptions',[AdminController::class, 'subscriptions'])->name('subscriptions');
+
+	// Countries
+	Route::get('panel/admin/countries', [CountriesStatesController::class, 'countries'])->name('countries');
+	Route::view('panel/admin/countries/add', 'admin.add-country')->name('countries');
+	Route::post('panel/admin/countries/add', [CountriesStatesController::class, 'addCountry']);
+	Route::get('panel/admin/countries/edit/{id}', [CountriesStatesController::class, 'editCountry'])->name('countries');
+	Route::post('panel/admin/countries/update', [CountriesStatesController::class, 'updateCountry']);
+	Route::post('panel/admin/countries/delete/{id}', [CountriesStatesController::class, 'deleteCountry']);
+
+	// States
+	Route::get('panel/admin/states', [CountriesStatesController::class, 'states'])->name('states');
+	Route::view('panel/admin/states/add', 'admin.add-state')->name('states');
+	Route::post('panel/admin/states/add', [CountriesStatesController::class, 'addState']);
+	Route::get('panel/admin/states/edit/{id}', [CountriesStatesController::class, 'editState'])->name('states');
+	Route::post('panel/admin/states/update', [CountriesStatesController::class, 'updateState']);
+	Route::post('panel/admin/states/delete/{id}', [CountriesStatesController::class, 'deleteState']);
+
+	// EMAIL SETTINGS
+	Route::view('panel/admin/settings/email','admin.email-settings')->name('email_settings');
+	Route::post('panel/admin/settings/email',[AdminController::class, 'emailSettings']);
+
+	// STORAGE
+	Route::view('panel/admin/storage','admin.storage')->name('storage');
+	Route::post('panel/admin/storage',[AdminController::class, 'storage']);
+
+	// Social Login
+	Route::view('panel/admin/social-login','admin.social-login')->name('social_login');
+	Route::post('panel/admin/social-login',[AdminController::class, 'updateSocialLogin']);
+
+	// PWA
+	Route::view('panel/admin/pwa','admin.pwa')->name('pwa');
+	Route::post('panel/admin/pwa',[AdminController::class, 'pwa']);
+
+	// Role and permissions
+	Route::get('panel/admin/roles-and-permissions', [RolesAndPermissionsController::class, 'index'])->name('role_and_permissions');
+	Route::view('panel/admin/roles-and-permissions/create', 'admin.add-role')->name('role_and_permissions');
+	Route::post('panel/admin/roles-and-permissions/create', [RolesAndPermissionsController::class, 'store']);
+	Route::get('panel/admin/roles-and-permissions/edit/{id}', [RolesAndPermissionsController::class, 'edit'])->name('role_and_permissions');
+	Route::post('panel/admin/roles-and-permissions/update', [RolesAndPermissionsController::class, 'update']);
+	Route::post('panel/admin/roles-and-permissions/delete/{id}', [RolesAndPermissionsController::class, 'destroy']);
+
+	// Push notification
+	Route::view('panel/admin/push-notifications', 'admin.push_notifications')->name('push_notifications');
+	Route::post('panel/admin/push-notifications', [AdminController::class, 'savePushNotifications']);
+
+});//<--- End Group Role
+
+Route::get('change/lang/{id}',[LangController::class, 'language'])->where(['id' => '[a-z]+']);
+
+// Version 3.2
+Route::get('install/{addon}',[InstallController::class, 'install']);
+
+// PayPal Add funds
+Route::get('payment/paypal',[PayPalController::class, 'show'])->name('paypal');
+Route::get('paypal/success',[PayPalController::class, 'success'])->name('paypal.success');
+
+// PayPal Buy
+Route::get('paypal/buy',[PayPalController::class, 'buy'])->name('paypal.buy');
+Route::get('paypal/buy/success', [PayPalController::class, 'successBuy'])->name('buy.success');
+
+// Verify Transactions PayPal
+Route::get('paypal/verify', [PayPalController::class, 'verifyTransaction'])->name('paypal.verify');
+
+// PayPal Subscription
+Route::get('payment/paypal/subscription', [PayPalController::class, 'subscription'])->name('paypal.subscription');
+
+// PayPal Webhook
+Route::post('webhook/paypal', [PayPalController::class, 'webhook'])->name('paypal.webhook');
+
+// PayPal Cancel
+Route::get('paypal/cancel', [PayPalController::class, 'cancel'])->name('paypal.cancel');
+
+// Stripe Add funds
+Route::get('payment/stripe', [StripeController::class, 'show'])->name('stripe');
+Route::post('payment/stripe/charge', [StripeController::class, 'charge']);
+
+// Stripe Buy
+Route::get('payment/stripe/buy', [StripeController::class, 'buy'])->name('stripe.buy');
+
+// Stripe Subscription
+Route::get('payment/stripe/subscription', [StripeController::class, 'subscription'])->name('stripe.subscription');
+
+// Stripe Webhook
+Route::post('stripe/webhook', [StripeWebHookController::class, 'handleWebhook']);
+
+Route::get('user/dashboard/downloads',[DashboardController::class, 'downloads'])->middleware('auth');
+Route::get('files/preview/{size}/{path}', [ImagesController::class, 'image'])->where('path', '.*');
+Route::get('assets/preview/{path}.{ext}', [ImagesController::class, 'preview']);
+
+Route::get('invoice/{id}',[UserController::class, 'invoice']);
+Route::get('my/referrals',[UserController::class, 'myReferrals'])->middleware('auth');
+Route::post('verify/2fa', [TwoFactorAuthController::class, 'verify']);
+Route::post('2fa/resend', [TwoFactorAuthController::class, 'resend']);
+
+Route::get('installer/script',[InstallScriptController::class, 'wizard']);
+Route::post('installer/script/database',[InstallScriptController::class, 'database']);
+Route::post('installer/script/user',[InstallScriptController::class, 'user']);
+
+Route::get('payment/paystack', [PaystackController::class, 'show'])->name('paystack');
+Route::get('payment/paystack/buy', [PaystackController::class, 'buy'])->name('paystack.buy');
+
+Route::get('payment/mollie', [MollieController::class, 'show'])->name('mollie');
+
+Route::get('payment/mollie/buy', [MollieController::class, 'buy'])->name('mollie.buy');
+Route::post('webhook/mollie', [MollieController::class, 'webhook']);
+
+Route::get('payment/razorpay', [RazorpayController::class, 'show'])->name('razorpay');
+Route::get('payment/razorpay/buy', [RazorpayController::class, 'buy'])->name('razorpay.buy');
+
+Route::get('payment/instamojo', [InstamojoController::class, 'show'])->name('instamojo');
+
+Route::get('payment/instamojo/buy', [InstamojoController::class, 'buy'])->name('instamojo.buy');
+Route::get('webhook/instamojo', [InstamojoController::class, 'webhook'])->name('webhook.instamojo');
+
+Route::get('panel/admin/collections',[AdminController::class, 'collections'])->name('collections')->middleware('role');
+Route::post('panel/admin/collections',[AdminController::class, 'deleteCollection'])->middleware('role');
+
+Route::get('payment/coinpayments', [CoinpaymentsController::class, 'show'])->name('coinpayments');
+Route::get('payment/coinpayments/buy', [CoinpaymentsController::class, 'buy'])->name('coinpayments.buy');
+Route::post('webhook/coinpayments', [CoinpaymentsController::class, 'webhook'])->name('coinpaymentsIPN');
+
+Route::get('payment/flutterwave', [FlutterwaveController::class, 'show'])->name('flutterwave');
+Route::get('payment/flutterwave/buy', [FlutterwaveController::class, 'buy'])->name('flutterwave.buy');
+Route::get('callback/flutterwave', [FlutterwaveController::class, 'callback'])->name('flutterwaveCallback');
+
+Route::get('payment/coinbase', 'CoinbaseController@show')->name('coinbase');
+Route::get('payment/coinbase/buy', 'CoinbaseController@buy')->name('coinbase.buy');
+Route::post('webhook/coinbase', 'CoinbaseController@webhook')->name('webhook.coinbase');

@@ -1,0 +1,99 @@
+IN-APP API NOTIFICATIONS LIST (Android App)
+===========================================
+These notifications are stored in the database and retrieved via the 'api/notifications' endpoint.
+
+GROUP 1: GENERAL / ADMIN
+------------------------
+1. public
+   - Description: Global announcements sent by admin to all users.
+   - Type: public
+
+2. admin_notification
+   - Description: Manual message sent by admin to a specific user.
+   - Type: user_specific
+   - Action Type: admin_notification
+
+GROUP 2: FINANCIAL (WALLET & TRANSACTIONS)
+------------------------------------------
+3. balance_added
+   - Description: Funds credited to wallet.
+   - Type: user_specific
+   - Action Type: balance_added
+
+4. balance_deducted
+   - Description: Funds debited from wallet.
+   - Type: user_specific
+   - Action Type: balance_deducted
+
+5. deposit_requested
+   - Description: Deposit request submitted successfully.
+   - Type: user_specific
+   - Action Type: deposit_requested
+
+6. deposit_approved
+   - Description: Deposit request approved.
+   - Type: user_specific
+   - Action Type: deposit_approved
+
+7. deposit_rejected
+   - Description: Deposit request rejected.
+   - Type: user_specific
+   - Action Type: deposit_rejected
+
+8. withdrawal_requested
+   - Description: Withdrawal request submitted (confirmation).
+   - Type: user_specific
+   - Action Type: withdrawal_requested
+
+9. withdrawal_approved
+   - Description: Withdrawal request approved.
+   - Type: user_specific
+   - Action Type: withdrawal_approved
+
+10. withdrawal_rejected
+    - Description: Withdrawal request rejected.
+    - Type: user_specific
+    - Action Type: withdrawal_rejected
+
+GROUP 3: ORDERS (GAME ACTIVITY)
+-------------------------------
+11. order_placed
+    - Description: Game order successfully placed.
+    - Type: user_specific
+    - Action Type: order_placed
+
+12. order_status_updated
+    - Description: Order status change (Win/Loss/Refund).
+    - Type: user_specific
+    - Action Type: order_status_updated
+    - Note: Covers 'order_approved', 'order_first_win', 'order_second_win', 'order_rejected'.
+
+GROUP 4: SERVICES & DEALERSHIP
+------------------------------
+13. dealership_requested
+    - Description: Dealership application submitted successfully.
+    - Type: user_specific
+    - Action Type: dealership_requested
+
+14. dealership_approved
+    - Description: Dealership application approved.
+    - Type: user_specific
+    - Action Type: dealership_approved
+
+15. dealership_updated
+    - Description: Dealership status or commission updated by admin.
+    - Type: user_specific
+    - Action Type: dealership_updated
+
+16. dealership_rejected
+    - Description: Dealership application rejected.
+    - Type: user_specific
+    - Action Type: dealership_rejected
+
+17. paid_service_purchased
+    - Description: Paid service purchased.
+    - Type: user_specific
+    - Action Type: paid_service_purchased
+
+NOTE:
+- Legacy social notifications (Like/Follow) are NOT included as they are not served via the 'api/notifications' endpoint.
