@@ -90,6 +90,25 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label text-lg-end">Live App Preview</label>
+                            <div class="col-sm-9">
+                                <div class="p-3 rounded border" style="background-color: var(--bs-tertiary-bg, rgba(255, 255, 255, 0.03)); max-width: 450px;">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <span class="spinner-grow spinner-grow-sm text-success me-2" style="width: 10px; height: 10px;" role="status"></span>
+                                            <span class="fw-semibold">Active Online Users</span>
+                                        </div>
+                                        <span class="badge bg-success py-2 px-3 rounded-pill" style="font-size: 0.9rem;">
+                                            <strong id="previewOnlineCount">{{ $settings->online_users_base ?? 452 }}</strong>
+                                            <span class="opacity-75 ms-1" style="font-size: 0.75rem;">Online</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <small class="d-block text-muted mt-1">Live appearance of the active users counter on the mobile dashboard.</small>
+                            </div>
+                        </div>
+
                         <hr class="my-4">
 
                         <h6 class="mb-3 text-uppercase text-muted fw-bold">
@@ -111,6 +130,26 @@
                             <div class="col-sm-9">
                                 <input type="number" class="form-control" name="transaction_alerts_interval" value="{{ old('transaction_alerts_interval', $settings->transaction_alerts_interval ?? 10) }}" min="3" max="60" required>
                                 <small class="d-block text-muted">Seconds between transitioning to the next withdrawal/deposit message.</small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label text-lg-end">Live App Preview</label>
+                            <div class="col-sm-9">
+                                <div class="p-3 rounded border" style="background-color: var(--bs-tertiary-bg, rgba(255, 255, 255, 0.03)); max-width: 450px;">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span id="previewTxnBadge" class="badge bg-success p-2 rounded-circle">
+                                                <i class="bi bi-arrow-up-right"></i>
+                                            </span>
+                                            <div id="previewTxnMain" style="font-size: 0.95rem;">
+                                                <span class="text-success fw-bold">Ahmed Ali</span> withdrew <span class="fw-bold">Rs. 5,000</span>
+                                            </div>
+                                        </div>
+                                        <small class="text-muted ms-2" style="font-size: 0.75rem; white-space: nowrap;" id="previewTxnTime">just now</small>
+                                    </div>
+                                </div>
+                                <small class="d-block text-muted mt-1">Live appearance of real-time transaction alerts sliding on the mobile dashboard.</small>
                             </div>
                         </div>
 
@@ -301,6 +340,43 @@ function openEditModal(alert) {
 
     var modal = new bootstrap.Modal(document.getElementById('alertModal'));
     modal.show();
+}
+
+// Live typing update for Online Users preview badge
+const baseInput = document.querySelector('input[name="online_users_base"]');
+if (baseInput) {
+    baseInput.addEventListener('input', function(e) {
+        const preview = document.getElementById('previewOnlineCount');
+        if (preview && e.target.value) preview.innerText = e.target.value;
+    });
+}
+
+// Live cycling preview of transaction alerts
+const alertItems = @json($alerts);
+let previewIndex = 0;
+if (alertItems && alertItems.length > 0) {
+    setInterval(function() {
+        previewIndex = (previewIndex + 1) % alertItems.length;
+        const item = alertItems[previewIndex];
+        const isWithdrawal = (item.type || '').toLowerCase() === 'withdrawal';
+        
+        const badge = document.getElementById('previewTxnBadge');
+        const main = document.getElementById('previewTxnMain');
+        const time = document.getElementById('previewTxnTime');
+        
+        if (badge) {
+            badge.className = 'badge p-2 rounded-circle ' + (isWithdrawal ? 'bg-success' : 'bg-primary');
+            badge.innerHTML = '<i class="bi ' + (isWithdrawal ? 'bi-arrow-up-right' : 'bi-arrow-down-left') + '"></i>';
+        }
+        if (main) {
+            const nameColor = isWithdrawal ? 'text-success' : 'text-primary';
+            const action = isWithdrawal ? ' withdrew ' : ' deposited ';
+            main.innerHTML = '<span class="' + nameColor + ' fw-bold">' + item.name + '</span>' + action + '<span class="fw-bold">Rs. ' + Number(item.amount).toLocaleString() + '</span>';
+        }
+        if (time) {
+            time.innerText = item.time_ago || 'just now';
+        }
+    }, 4000);
 }
 </script>
 @endsection
