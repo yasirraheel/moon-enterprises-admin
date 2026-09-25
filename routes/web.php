@@ -34,6 +34,8 @@ use App\Http\Controllers\TwoFactorAuthController;
 use App\Http\Controllers\CountriesStatesController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\AdminLiveAlertsController;
+use App\Http\Controllers\Api\LiveAlertsApiController;
 use App\Http\Controllers\RolesAndPermissionsController;
 use App\Http\Controllers\AjaxController;
 
@@ -101,6 +103,7 @@ Route::get('sitemaps.xml', function() {
 Route::get('api/apk/version-info', [AdminController::class, 'getApkVersionInfo']);
 Route::get('api/help-videos', [AdminController::class, 'getHelpVideosApi']);
 Route::post('api/help-videos/{id}/increment-view', [AdminController::class, 'incrementHelpVideoView']);
+Route::get('api/live-alerts', [LiveAlertsApiController::class, 'getLiveAlerts']);
 
 // Authenticated User Routes
 Route::group(['middleware' => 'auth'], function() {
@@ -480,6 +483,14 @@ Route::group(['middleware' => 'role'], function() {
     Route::post('panel/admin/help-videos/store', [AdminController::class, 'storeHelpVideo'])->name('admin.help.videos.store');
     Route::post('panel/admin/help-videos/toggle-active/{id}', [AdminController::class, 'toggleHelpVideoActive'])->name('admin.help.videos.toggle');
     Route::delete('panel/admin/help-videos/delete/{id}', [AdminController::class, 'deleteHelpVideo'])->name('admin.help.videos.delete');
+
+    // Live Activity Alerts & Online Users Management
+    Route::get('panel/admin/live-alerts', [AdminLiveAlertsController::class, 'index'])->name('admin.live_alerts');
+    Route::post('panel/admin/live-alerts/settings', [AdminLiveAlertsController::class, 'updateSettings'])->name('admin.live_alerts.settings');
+    Route::post('panel/admin/live-alerts/alert/store', [AdminLiveAlertsController::class, 'storeAlert'])->name('admin.live_alerts.store');
+    Route::post('panel/admin/live-alerts/alert/toggle/{id}', [AdminLiveAlertsController::class, 'toggleAlert'])->name('admin.live_alerts.toggle');
+    Route::delete('panel/admin/live-alerts/alert/delete/{id}', [AdminLiveAlertsController::class, 'deleteAlert'])->name('admin.live_alerts.delete');
+    Route::post('panel/admin/live-alerts/reset-defaults', [AdminLiveAlertsController::class, 'resetDefaults'])->name('admin.live_alerts.reset_defaults');
 });
 
 // Public APK Download Routes

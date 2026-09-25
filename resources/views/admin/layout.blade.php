@@ -560,6 +560,12 @@
                   </a>
               </li>
 
+              <li class="nav-item">
+                  <a href="{{ route('admin.live_alerts') }}" class="nav-link text-truncate @if (request()->is('panel/admin/live-alerts*')) active @endif">
+                      <i class="bi-broadcast me-2"></i> Live Activity Alerts
+                  </a>
+              </li>
+
             {{-- @if (auth()->user()->hasPermission('members_reported'))
               <li class="nav-item">
                   <a href="{{ url('panel/admin/members-reported') }}" class="nav-link text-truncate @if (request()->is('panel/admin/members-reported')) active @endif">

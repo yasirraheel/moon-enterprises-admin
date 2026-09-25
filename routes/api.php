@@ -28,6 +28,9 @@ Route::get('apk-version', [AuthController::class, 'getApkVersion']);
 Route::post('apk-download', [AuthController::class, 'incrementApkDownload']);
 Route::get('is_trial', [AuthController::class, 'getIsTrial']);
 
+// Live Alerts (Online Users Count & Live Transaction Activity)
+Route::get('live-alerts', [\App\Http\Controllers\Api\LiveAlertsApiController::class, 'getLiveAlerts']);
+
 // Help Videos API Routes
 Route::get('help-videos', [\App\Http\Controllers\AdminController::class, 'getHelpVideosApi']);
 Route::post('help-videos/{id}/increment-view', [\App\Http\Controllers\AdminController::class, 'incrementHelpVideoView']);
