@@ -37,6 +37,10 @@ class AdminLiveAlertsController extends Controller
             'online_users_max' => 'required|integer|gte:online_users_min',
             'online_users_interval' => 'required|integer|min:1|max:60',
             'transaction_alerts_interval' => 'required|integer|min:2|max:60',
+            'withdrawal_min_amount' => 'required|numeric|min:1',
+            'withdrawal_max_amount' => 'required|numeric|gte:withdrawal_min_amount',
+            'deposit_min_amount' => 'required|numeric|min:1',
+            'deposit_max_amount' => 'required|numeric|gte:deposit_min_amount',
         ]);
 
         if ($validator->fails()) {
@@ -51,6 +55,10 @@ class AdminLiveAlertsController extends Controller
 
         $settings->transaction_alerts_enabled = $request->has('transaction_alerts_enabled');
         $settings->transaction_alerts_interval = (int) $request->transaction_alerts_interval;
+        $settings->withdrawal_min_amount = (float) $request->withdrawal_min_amount;
+        $settings->withdrawal_max_amount = (float) $request->withdrawal_max_amount;
+        $settings->deposit_min_amount = (float) $request->deposit_min_amount;
+        $settings->deposit_max_amount = (float) $request->deposit_max_amount;
 
         $settings->save();
 

@@ -26,6 +26,10 @@ class LiveAlertsApiController extends Controller
 
             $txAlertsEnabled = true;
             $txAlertsInterval = 10;
+            $withdrawalMinAmount = 2000;
+            $withdrawalMaxAmount = 25000;
+            $depositMinAmount = 1000;
+            $depositMaxAmount = 20000;
 
             if ($settings) {
                 if (isset($settings->online_users_enabled)) {
@@ -49,6 +53,18 @@ class LiveAlertsApiController extends Controller
                 }
                 if (!empty($settings->transaction_alerts_interval)) {
                     $txAlertsInterval = (int) $settings->transaction_alerts_interval;
+                }
+                if (!empty($settings->withdrawal_min_amount)) {
+                    $withdrawalMinAmount = (float) $settings->withdrawal_min_amount;
+                }
+                if (!empty($settings->withdrawal_max_amount)) {
+                    $withdrawalMaxAmount = (float) $settings->withdrawal_max_amount;
+                }
+                if (!empty($settings->deposit_min_amount)) {
+                    $depositMinAmount = (float) $settings->deposit_min_amount;
+                }
+                if (!empty($settings->deposit_max_amount)) {
+                    $depositMaxAmount = (float) $settings->deposit_max_amount;
                 }
             }
 
@@ -102,6 +118,10 @@ class LiveAlertsApiController extends Controller
                     'transaction_alerts' => [
                         'enabled' => $txAlertsEnabled,
                         'interval_seconds' => $txAlertsInterval,
+                        'withdrawal_min_amount' => $withdrawalMinAmount,
+                        'withdrawal_max_amount' => $withdrawalMaxAmount,
+                        'deposit_min_amount' => $depositMinAmount,
+                        'deposit_max_amount' => $depositMaxAmount,
                         'alerts' => $alerts,
                     ],
                 ]

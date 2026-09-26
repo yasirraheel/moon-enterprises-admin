@@ -128,8 +128,52 @@
                         <div class="row mb-3">
                             <label class="col-sm-3 col-form-label text-lg-end">Message Switch Interval</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" name="transaction_alerts_interval" value="{{ old('transaction_alerts_interval', $settings->transaction_alerts_interval ?? 10) }}" min="3" max="60" required>
+                                <input type="number" class="form-control" name="transaction_alerts_interval" value="{{ old('transaction_alerts_interval', $settings->transaction_alerts_interval ?? 10) }}" min="2" max="60" required>
                                 <small class="d-block text-muted">Seconds between transitioning to the next withdrawal/deposit message.</small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label text-lg-end">Withdrawal Amount Bracket</label>
+                            <div class="col-sm-9">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text">Rs.</span>
+                                            <input type="number" class="form-control" name="withdrawal_min_amount" value="{{ old('withdrawal_min_amount', $settings->withdrawal_min_amount ?? 2000) }}" min="1" placeholder="Min" required>
+                                        </div>
+                                        <small class="d-block text-muted">Minimum withdrawal alert amount</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text">Rs.</span>
+                                            <input type="number" class="form-control" name="withdrawal_max_amount" value="{{ old('withdrawal_max_amount', $settings->withdrawal_max_amount ?? 25000) }}" min="1" placeholder="Max" required>
+                                        </div>
+                                        <small class="d-block text-muted">Maximum withdrawal alert amount</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label text-lg-end">Deposit Amount Bracket</label>
+                            <div class="col-sm-9">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text">Rs.</span>
+                                            <input type="number" class="form-control" name="deposit_min_amount" value="{{ old('deposit_min_amount', $settings->deposit_min_amount ?? 1000) }}" min="1" placeholder="Min" required>
+                                        </div>
+                                        <small class="d-block text-muted">Minimum deposit alert amount</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text">Rs.</span>
+                                            <input type="number" class="form-control" name="deposit_max_amount" value="{{ old('deposit_max_amount', $settings->deposit_max_amount ?? 20000) }}" min="1" placeholder="Max" required>
+                                        </div>
+                                        <small class="d-block text-muted">Maximum deposit alert amount</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
