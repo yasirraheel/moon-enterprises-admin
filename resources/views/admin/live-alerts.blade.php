@@ -97,7 +97,7 @@
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div class="d-flex align-items-center">
                                             <span class="spinner-grow spinner-grow-sm text-success me-2" style="width: 10px; height: 10px;" role="status"></span>
-                                            <span class="fw-semibold">Active Online Users</span>
+                                            <span class="fw-semibold">Active Users</span>
                                         </div>
                                         <span class="badge bg-success py-2 px-3 rounded-pill" style="font-size: 0.9rem;">
                                             <strong id="previewOnlineCount">{{ $settings->online_users_base ?? 452 }}</strong>
