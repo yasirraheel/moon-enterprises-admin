@@ -105,12 +105,35 @@ class LiveAlertsApiController extends Controller
                 $alerts = collect($fallback);
             }
 
+            // Calculate a realistic organic active online users count based on diurnal curve + time wave
+            $now = now()->setTimezone('Asia/Karachi');
+            $hour = (int) $now->format('G'); // 0 to 23
+            $minute = (int) $now->format('i'); // 0 to 59
+            $second = (int) $now->format('s'); // 0 to 59
+            
+            $range = max(0, $onlineUsersMax - $onlineUsersMin);
+            if ($range > 0) {
+                // Diurnal wave: Peak around 21:00 (9 PM PKT), valley around 05:00 (5 AM PKT)
+                $timeOfDay = ($hour * 3600 + $minute * 60 + $second) / 86400.0;
+                $diurnal = 0.5 + 0.35 * cos(2 * M_PI * ($timeOfDay - 0.875)); // 0.15 to 0.85
+                
+                // Micro variation wave (smoothly undulates over 10 minutes)
+                $micro = 0.10 * sin(2 * M_PI * (($minute * 60 + $second) / 600.0));
+                
+                $fraction = max(0.08, min(0.92, $diurnal + $micro));
+                $calculatedCurrent = (int) round($onlineUsersMin + ($range * $fraction));
+            } else {
+                $calculatedCurrent = $onlineUsersBase;
+            }
+            $calculatedCurrent = max($onlineUsersMin, min($onlineUsersMax, $calculatedCurrent));
+
             return response()->json([
                 'success' => true,
                 'data' => [
                     'online_users' => [
                         'enabled' => $onlineUsersEnabled,
                         'base_count' => $onlineUsersBase,
+                        'current_count' => $calculatedCurrent,
                         'min_count' => $onlineUsersMin,
                         'max_count' => $onlineUsersMax,
                         'interval_seconds' => $onlineUsersInterval,

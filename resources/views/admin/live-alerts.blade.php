@@ -386,12 +386,61 @@ function openEditModal(alert) {
     modal.show();
 }
 
-// Live typing update for Online Users preview badge
+// Dynamic Real-time Online Users preview simulation
 const baseInput = document.querySelector('input[name="online_users_base"]');
+const minInput = document.querySelector('input[name="online_users_min"]');
+const maxInput = document.querySelector('input[name="online_users_max"]');
+const intervalInput = document.querySelector('input[name="online_users_interval"]');
+const preview = document.getElementById('previewOnlineCount');
+
+let simCount = parseInt(baseInput ? baseInput.value : 2000) || 2000;
+let simTarget = simCount;
+
+function pickNewTarget(minVal, maxVal) {
+    const range = maxVal - minVal;
+    if (range <= 0) return minVal;
+    const margin = Math.round(range * 0.1);
+    return Math.floor(minVal + margin + Math.random() * (range - 2 * margin));
+}
+
+function updateSimulatedOnlineCount() {
+    const minVal = parseInt(minInput ? minInput.value : 1900) || 1900;
+    const maxVal = parseInt(maxInput ? maxInput.value : 3000) || 3000;
+    const range = Math.max(10, maxVal - minVal);
+
+    if (simTarget < minVal || simTarget > maxVal || Math.abs(simCount - simTarget) < 15 || Math.random() < 0.15) {
+        simTarget = pickNewTarget(minVal, maxVal);
+    }
+
+    const stepMax = Math.max(2, Math.min(25, Math.round(range / 80)));
+    const step = Math.floor(1 + Math.random() * stepMax);
+
+    let delta = 0;
+    if (simCount < simTarget) {
+        delta = Math.random() < 0.72 ? step : -Math.round(step * 0.5);
+    } else {
+        delta = Math.random() < 0.72 ? -step : Math.round(step * 0.5);
+    }
+
+    simCount += delta;
+    if (simCount < minVal) simCount = minVal + Math.floor(Math.random() * 5);
+    if (simCount > maxVal) simCount = maxVal - Math.floor(Math.random() * 5);
+
+    if (preview) preview.innerText = simCount;
+}
+
+if (preview) {
+    setInterval(updateSimulatedOnlineCount, 3000);
+}
+
 if (baseInput) {
     baseInput.addEventListener('input', function(e) {
-        const preview = document.getElementById('previewOnlineCount');
-        if (preview && e.target.value) preview.innerText = e.target.value;
+        const val = parseInt(e.target.value);
+        if (val) {
+            simCount = val;
+            simTarget = val;
+            if (preview) preview.innerText = simCount;
+        }
     });
 }
 
