@@ -568,4 +568,56 @@ class AdminGamePromptsController extends Controller
             'affected_orders' => $affectedCount
         ]);
     }
+
+    public function deleteAllOrders(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'prompt_id' => 'required|exists:game_prompts,id',
+            'category_id' => 'nullable|exists:categories,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $prompt = GamePrompts::findOrFail($request->prompt_id);
+
+        // Parse the prompt's number range to get valid RTTP values
+        $start = $this->parsePromptNumber($prompt->number_start);
+        $end = $this->parsePromptNumber($prompt->number_end);
+
+        $validRttps = [];
+        for ($i = $start['number']; $i <= $end['number']; $i++) {
+            $rttpValue = $start['prefix'] . str_pad($i, $start['padding'], '0', STR_PAD_LEFT) . $start['suffix'];
+            $validRttps[] = $rttpValue;
+        }
+
+        $query = Orders::whereIn('rttp', $validRttps);
+        if ($request->filled('category_id')) {
+            $category = Categories::find($request->category_id);
+            if ($category) {
+                $query->where('game_name', $category->name);
+            }
+        }
+
+        $deletedCount = $query->count();
+        if ($deletedCount === 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No orders found for this prompt.'
+            ], 404);
+        }
+
+        $query->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => "Successfully deleted all {$deletedCount} orders for prompt '{$prompt->prompt}'.",
+            'deleted_count' => $deletedCount
+        ]);
+    }
 }

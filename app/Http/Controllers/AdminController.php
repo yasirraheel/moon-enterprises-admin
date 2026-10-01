@@ -476,6 +476,11 @@ class AdminController extends Controller
 		$sql->theme                = $request->theme;
 		$sql->banner_cookies       = $request->banner_cookies ?? false;
 
+		// App Closed Mode Settings (Server-controlled mobile app shutdown)
+		$sql->app_closed           = $request->has('app_closed') ? 1 : 0;
+		$sql->app_closed_title     = $request->app_closed_title;
+		$sql->app_closed_message   = $request->app_closed_message;
+
 		// Note: Version is managed through APK Versions, not stored in admin_settings
 
 		// SEO Settings - Commented out

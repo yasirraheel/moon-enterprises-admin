@@ -223,6 +223,14 @@ class ManualNotificationController extends Controller
             \File::delete('public/img/' . $manualNotification->image);
         }
 
+        try {
+            \App\Models\Notifications::where('type', 'manual')
+                ->where('target', $manualNotification->id)
+                ->delete();
+        } catch (\Exception $e) {
+            \Log::warning('Could not delete associated user notifications: ' . $e->getMessage());
+        }
+
         $manualNotification->delete();
 
         return redirect()->route('admin.manual_notifications.index')

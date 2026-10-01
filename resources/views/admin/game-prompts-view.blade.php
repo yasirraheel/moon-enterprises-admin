@@ -45,10 +45,13 @@
                     <button type="button" class="btn btn-info text-white me-2" id="copyAsTextBtn">
                         <i class="bi-clipboard me-1"></i> Copy as Text
                     </button>
-                    <button type="button" class="btn btn-success" id="markAsDoneBtn">
+                    <button type="button" class="btn btn-success me-2" id="markAsDoneBtn">
                         <i class="bi-check-circle me-1"></i> Mark as Done
                     </button>
                     @endif
+                    <button type="button" class="btn btn-danger" id="deleteAllOrdersBtn">
+                        <i class="bi-trash-fill me-1"></i> Delete All Orders
+                    </button>
                 </div>
                 <div>
                     <a href="{{ url('panel/admin/game-prompts/export-pdf/'.$prompt->id) . ($category ? '?category_id='.$category->id : '') }}" class="btn btn-primary">
@@ -753,6 +756,76 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.disabled = false;
                 this.innerHTML = originalHTML;
             });
+        });
+    }
+
+    // Delete All Orders functionality
+    const deleteAllOrdersBtn = document.getElementById('deleteAllOrdersBtn');
+    if (deleteAllOrdersBtn) {
+        deleteAllOrdersBtn.addEventListener('click', function() {
+            const doDelete = function() {
+                deleteAllOrdersBtn.disabled = true;
+                const originalHTML = deleteAllOrdersBtn.innerHTML;
+                deleteAllOrdersBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Deleting...';
+
+                fetch('{{ route("admin.game_prompts.delete_all_orders") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        category_id: categoryId,
+                        prompt_id: promptId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (typeof swal === 'function') {
+                            swal("Deleted!", data.message, "success");
+                        } else {
+                            showAlert(data.message, 'success');
+                        }
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1200);
+                    } else {
+                        if (typeof swal === 'function') {
+                            swal("Notice", data.message || 'Failed to delete orders', "info");
+                        } else {
+                            showAlert(data.message || 'Failed to delete orders', 'warning');
+                        }
+                        deleteAllOrdersBtn.disabled = false;
+                        deleteAllOrdersBtn.innerHTML = originalHTML;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showAlert('An error occurred while deleting orders', 'error');
+                    deleteAllOrdersBtn.disabled = false;
+                    deleteAllOrdersBtn.innerHTML = originalHTML;
+                });
+            };
+
+            if (typeof swal === 'function') {
+                swal({
+                    title: "Delete All Orders?",
+                    text: "Are you sure you want to delete ALL orders for this prompt? This action cannot be undone!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#dc3545",
+                    confirmButtonText: "Yes, delete all!",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                        doDelete();
+                    }
+                });
+            } else if (confirm('Are you sure you want to delete ALL orders for this prompt? This action cannot be undone!')) {
+                doDelete();
+            }
         });
     }
 });

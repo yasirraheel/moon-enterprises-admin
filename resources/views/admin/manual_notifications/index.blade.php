@@ -160,7 +160,7 @@
 										</a>
 										
 										@if($notification->type === 'public')
-										<!-- Only allow editing/deleting public notifications -->
+										<!-- Only allow editing public notifications -->
 										<a href="{{ route('admin.manual_notifications.edit', $notification) }}" 
 											class="text-reset fs-5 me-2" title="{{ __('admin.edit') }}">
 											<i class="far fa-edit"></i>
@@ -169,11 +169,13 @@
 											method="POST" class="d-inline">
 											@csrf
 											@method('PATCH')
-											<button type="submit" class="btn btn-link text-{{ $notification->is_active ? 'warning' : 'success' }} e-none fs-5 p-0" 
+											<button type="submit" class="btn btn-link text-{{ $notification->is_active ? 'warning' : 'success' }} e-none fs-5 p-0 me-2" 
 												title="{{ $notification->is_active ? __('admin.deactivate') : __('admin.activate') }}">
 												<i class="bi bi-{{ $notification->is_active ? 'pause' : 'play' }}"></i>
 											</button>
 										</form>
+										@endif
+
 										<form action="{{ route('admin.manual_notifications.destroy', $notification) }}" 
 											method="POST" class="d-inline-block align-top">
 											@csrf
@@ -182,12 +184,6 @@
 												<i class="bi-trash-fill"></i>
 											</button>
 										</form>
-										@else
-										<!-- System notifications are read-only -->
-										<span class="text-muted fs-6" title="System notifications cannot be edited">
-											<i class="bi bi-lock"></i>
-										</span>
-										@endif
 									</td>
 								</tr>
 								@endforeach

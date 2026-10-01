@@ -190,6 +190,40 @@
          </div>
        </div><!-- end row -->
 
+       <!-- Mobile App Closed Mode Section -->
+       <div class="row mb-4">
+         <div class="col-12">
+           <div class="card border-{{ ($settings->app_closed ?? false) ? 'danger' : 'light' }} shadow-sm">
+             <div class="card-header bg-light d-flex justify-content-between align-items-center">
+               <div class="d-flex align-items-center">
+                 <i class="bi bi-power fs-4 text-{{ ($settings->app_closed ?? false) ? 'danger' : 'secondary' }} me-2"></i>
+                 <div>
+                   <h6 class="mb-0 fw-bold">Mobile App Closed Mode</h6>
+                   <small class="text-muted">Turn ON to immediately take the mobile app down for users and show a custom closed dialog (does not affect web panel or maintenance mode).</small>
+                 </div>
+               </div>
+               <div class="form-check form-switch form-switch-lg ms-3">
+                 <input class="form-check-input" type="checkbox" name="app_closed" id="app_closed_toggle" @if ($settings->app_closed ?? false) checked="checked" @endif value="1" role="switch" style="width: 3em; height: 1.5em; cursor: pointer;">
+               </div>
+             </div>
+             <div class="card-body">
+               <div class="row">
+                 <div class="col-md-6 mb-3">
+                   <label class="form-label fw-semibold">Dialog Title</label>
+                   <input type="text" name="app_closed_title" class="form-control" value="{{ $settings->app_closed_title ?? 'App Temporarily Closed' }}" placeholder="e.g. App Temporarily Closed">
+                   <small class="text-muted">Title shown in the app's closed dialog.</small>
+                 </div>
+                 <div class="col-md-6 mb-3">
+                   <label class="form-label fw-semibold">Dialog Message</label>
+                   <textarea name="app_closed_message" class="form-control" rows="2" placeholder="e.g. We are currently closed for bookings. Please check back later.">{{ $settings->app_closed_message ?? 'We are currently closed for bookings. Please check back later.' }}</textarea>
+                   <small class="text-muted">Detailed message or operating hours explanation for users.</small>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div><!-- end app closed mode row -->
+
        <!-- Timezone Settings Row -->
        <div class="row mb-4">
          <div class="col-12">

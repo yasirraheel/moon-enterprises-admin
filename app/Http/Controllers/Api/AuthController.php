@@ -335,7 +335,10 @@ class AuthController extends Controller
                     'currency_code' => $settings->currency_code ?? 'USD',
                     'currency_position' => $settings->currency_position ?? 'before',
                     'whatsapp_number' => $settings->whatsapp_number ?? null,
-                    'whatsapp_group_link' => $settings->whatsapp_group_link ?? null
+                    'whatsapp_group_link' => $settings->whatsapp_group_link ?? null,
+                    'app_closed' => (bool) ($settings->app_closed ?? false),
+                    'app_closed_title' => $settings->app_closed_title ?: 'App Temporarily Closed',
+                    'app_closed_message' => $settings->app_closed_message ?: 'We are currently closed for bookings. Please check back later.'
                 ]
             ]);
 

@@ -147,6 +147,11 @@ class LiveAlertsApiController extends Controller
                         'deposit_max_amount' => $depositMaxAmount,
                         'alerts' => $alerts,
                     ],
+                    'app_status' => [
+                        'app_closed' => (bool) ($settings->app_closed ?? false),
+                        'app_closed_title' => ($settings && !empty($settings->app_closed_title)) ? $settings->app_closed_title : 'App Temporarily Closed',
+                        'app_closed_message' => ($settings && !empty($settings->app_closed_message)) ? $settings->app_closed_message : 'We are currently closed for bookings. Please check back later.',
+                    ],
                 ]
             ]);
         } catch (\Exception $e) {

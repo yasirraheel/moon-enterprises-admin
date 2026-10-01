@@ -325,6 +325,7 @@ Route::group(['middleware' => 'role'], function() {
     Route::post('panel/admin/game-prompts/mark-as-done', [AdminGamePromptsController::class, 'markAsDone'])->name('admin.game_prompts.mark_as_done');
     Route::post('panel/admin/game-prompts/mark-as-undone', [AdminGamePromptsController::class, 'markAsUndone'])->name('admin.game_prompts.mark_as_undone');
     Route::post('panel/admin/game-prompts/mark-all-as-undone', [AdminGamePromptsController::class, 'markAllAsUndone'])->name('admin.game_prompts.mark_all_as_undone');
+    Route::post('panel/admin/game-prompts/delete-all-orders', [AdminGamePromptsController::class, 'deleteAllOrders'])->name('admin.game_prompts.delete_all_orders');
 
     // Results Management
     Route::get('panel/admin/results', [AdminResultsController::class, 'index'])->name('admin.results');
